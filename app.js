@@ -3,38 +3,71 @@ var argv =  require('optimist')
 			.argv;
 
 // Command Line Arguments
-var colNum = argv.c || 0,
-	delimeter = argv.d || ' ',
-	file = argv.f,
- 	ft = require('file-tail').startTailing(file),
- 	fs = require('fs'),
- 	savedKnownFile = './knownItems.json',
- 	knownColumns = {};
+var colNum = argv.c || null;
+var delimeter = argv.d || ' ';
+var file = argv.f || null;
+var fs = require('fs');
+var savedKnownFile = './knownItems.json';
+var	knownColumns = {};
 
-fs.readFile(savedKnownFile, function(err, data){
-	if(data == undefined) {
-		knownColumns = {};
-	} else {
-		console.log('Loading from previous file... ');
-		knownColumns = JSON.parse(data);
+function readFile() {
+	var ft = require('file-tail').startTailing(file);
+	console.log('Reading from file: ', file);
+
+	// Monitor 'tail' of file
+	ft.on('line', function(line){
+
+		if(colNum !== null) {
+			column = line.split(delimeter)[colNum];
+		} else {
+			column = line;
+		}
+
+		if(column in knownColumns) {
+			knownColumns[column]++;
+		} else {
+			console.log(column, 'not known.. adding to object.');
+			knownColumns[column] = 1;
+		}
+
 		console.log(knownColumns);
-	}
-});
+	});
+}
 
-// Monitor 'tail' of file
-ft.on('line', function(line){
+function readstdin() {
+	console.log('Reading from STDIN..');
 
-	column = line.split(delimeter)[colNum];
+	var readline = require('readline');
+	var rl = readline.createInterface({
+	  input: process.stdin,
+	  output: process.stdout
+	});
 
-	if(column in knownColumns) {
-		knownColumns[column]++;
-	} else {
-		console.log(column, 'not known.. adding to object.');
-		knownColumns[column] = 1;
-	}
+	rl.on('line', function(line){
+		if(colNum !== null) {
+			column = line.split(delimeter)[colNum];
+		} else {
+			column = line;
+		}
 
-	console.log(knownColumns);
-});
+		if(column in knownColumns) {
+			knownColumns[column]++;
+		} else {
+			console.log(column, 'not known.. adding to object.');
+			knownColumns[column] = 1;
+		}
+
+		console.log(knownColumns);
+	});
+
+	console.log('\n\n', knownColumns, '\n\n');
+}
+
+if(argv.f) {
+	readFile();
+} else {
+	readstdin();
+}
 
 process.on( 'SIGINT', function() {
 	console.log('\nSaving to ', savedKnownFile);
