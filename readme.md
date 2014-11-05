@@ -1,5 +1,4 @@
 #File Watcher
-==========
 
 Small application that monitors the tail of a file specified, or through stdin and allows you to monitor and count occurrences of a column on each line. For example, counting the number of referrers in a website access log.
 
