@@ -1,0 +1,9 @@
+{
+	"name": "referrers",
+	"description": "Reads HTTP log files and extracts and counts referrers.",
+	"version": "0.0.1",
+	"dependencies": {
+		"file-tail": "*",
+		"optimist": "*"
+	}
+}
