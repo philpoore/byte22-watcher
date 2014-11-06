@@ -15,10 +15,10 @@ Displays most common results in a tabular format and can save data in a JSON fil
 * Ctrl+S - Saves the data to savedData.json in the current folder.
 
 ####Parameters
-+ colNum is the number of delimeters to skip past (counts from 1)
-	For example using -c 2 on a line like "Col1 Col2 Col3 Col4" would return just "Col2" for each line.
-+ delimeter is what each column is seperated by, default is a single space character - ' '.
-+ filename is the path of the file, if -f is not specified, File Watcher will use stdin.
+* colNum is the number of delimeters to skip past (counts from 1)
+	* For example using -c 2 on a line like "Col1 Col2 Col3 Col4" would return just "Col2" for each line.
+* delimeter is what each column is seperated by, default is a single space character - ' '.
+* filename is the path of the file, if -f is not specified, File Watcher will use stdin.
 
 ###Examples
 
@@ -36,3 +36,6 @@ This command uses tail to follow the end of the file and pipe in to File Watcher
 ```Shell
 	tail -F access.log | ./watcher -c 16
 ```
+
+####Issues
+* Keyboard commands don't currently work with stdin

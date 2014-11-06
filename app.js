@@ -42,6 +42,43 @@ if(argv.help || argv.h) {
 
 keypress(process.stdin);
 
+
+function createTable() {
+	var table = new Table({
+	    head: ['Column Name', 'Count']
+	  , colWidths: [50, 15]
+	});
+
+	// Convert data to table-friendly format.
+	var kca = JSON.stringify(knownColumns).split(',').map(function(str){
+		str = str.replace('{','');
+		str = str.replace('}','');
+		str = str.replace('/\"/g','');
+		str = str.split(':');
+		str[1] = parseInt(str[1]);
+		return str;
+	}).sort(function(a, b) {
+
+		    var valueA, valueB;
+
+		    valueA = a[1]; 
+		    valueB = b[1];
+		    if (valueA < valueB) {
+		        return -1;
+		    }
+		    else if (valueA > valueB) {
+		        return 1;
+		    }
+		    return 0;
+
+	}).reverse().map(function(arrItem){
+		table.push(arrItem);
+		return arrItem;
+	});
+
+	return table.toString();
+}
+
 // Keypresses
 process.stdin.on('keypress', function (ch, key) {
 
@@ -53,44 +90,17 @@ process.stdin.on('keypress', function (ch, key) {
 
 		console.log('==========================================================\nShowing Summary of Collected Data:\n');
 
-		var table = new Table({
-		    head: ['Column Name', 'Count']
-		  , colWidths: [50, 15]
-		});
-
-		// Convert data to table-friendly format.
-		var kca = JSON.stringify(knownColumns).split(',').map(function(str){
-			str = str.replace('{','');
-			str = str.replace('}','');
-			str = str.replace('/\"/g','');
-			str = str.split(':');
-			str[1] = parseInt(str[1]);
-			return str;
-		}).sort(function(a, b) {
-
-			    var valueA, valueB;
-
-			    valueA = a[1]; 
-			    valueB = b[1];
-			    if (valueA < valueB) {
-			        return -1;
-			    }
-			    else if (valueA > valueB) {
-			        return 1;
-			    }
-			    return 0;
-
-		}).reverse().map(function(arrItem){
-			table.push(arrItem);
-			return arrItem;
-		});
-
-		console.log(table.toString());
+		console.log(createTable());
 	}
 
 	if (key && key.ctrl && key.name == 's') {
-		console.log('\nSaving to ', savedKnownFile);
+		console.log('\nSaving JSON to ', savedKnownFile);
 		fs.writeFileSync(savedKnownFile, JSON.stringify(knownColumns));
+	}
+
+	if (key && key.ctrl && key.name == 'd') {
+		console.log('\nSaving Table to ', savedKnownFile);
+		fs.writeFileSync(savedKnownFile, createTable());
 	}
 
 });
