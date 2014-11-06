@@ -3,6 +3,7 @@ var argv =  require('optimist')
 			.argv;
 
 var fs = require('fs');
+var colors = require('colors');
 var keypress = require('keypress')
 var tty = require('tty');
 var Table = require('cli-table');
@@ -117,8 +118,9 @@ function readFile() {
 
 		if(column in knownColumns) {
 			knownColumns[column]++;
+			console.log(colors.gray(column + ' (' + knownColumns[column] + ')'));
 		} else {
-			console.log('New!! ', column);
+			console.log('New!! '.red, column);
 			knownColumns[column] = 1;
 		}
 
