@@ -97,60 +97,46 @@ process.stdin.on('keypress', function (ch, key) {
 
 if (typeof process.stdin.setRawMode == 'function') {
   process.stdin.setRawMode(true);
-} else {
-  tty.setRawMode(true);
 }
 process.stdin.resume();
 
+function handleLine(line) {
+
+	if(colNum !== null) {
+		column = line.split(delimeter)[colNum];
+	} else {
+		column = line;
+	}
+
+	if(column in knownColumns) {
+		knownColumns[column]++;
+		console.log(colors.gray(column + ' (' + knownColumns[column] + ')'));
+	} else {
+		console.log('New!! '.red, column);
+		knownColumns[column] = 1;
+	}		
+
+}
 
 function readFile() {
 	ft = ft.startTailing(file);
 	console.log('Reading from file: ', file);
 
 	// Monitor 'tail' of file
-	ft.on('line', function(line){
+	ft.on('line', handleLine);
 
-		if(colNum !== null) {
-			column = line.split(delimeter)[colNum];
-		} else {
-			column = line;
-		}
-
-		if(column in knownColumns) {
-			knownColumns[column]++;
-			console.log(colors.gray(column + ' (' + knownColumns[column] + ')'));
-		} else {
-			console.log('New!! '.red, column);
-			knownColumns[column] = 1;
-		}
-
-	});
 }
 
 function readstdin() {
-	console.log('Reading from STDIN..');
+	console.log('Reading from STDIN: ');
 
 	var rl = readline.createInterface({
 	  input: process.stdin,
-	  output: process.stdout
+	  output: process.stdout,
+	  terminal: false
 	});
 
-	rl.on('line', function(line){
-		if(colNum !== null) {
-			column = line.split(delimeter)[colNum];
-		} else {
-			column = line;
-		}
-
-		if(column in knownColumns) {
-			knownColumns[column]++;
-		} else {
-			console.log('New! ', column);
-			knownColumns[column] = 1;
-		}
-
-		console.log(knownColumns);
-	});
+	rl.on('line', handleLine);
 }
 
 if(argv.f) {
