@@ -5,6 +5,8 @@
 	"main": "app.js",
 	"dependencies": {
 		"file-tail": "*",
-		"optimist": "*"
+		"optimist": "*",
+		"keypress": "*",
+		"cli-table": "*"
 	}
 }

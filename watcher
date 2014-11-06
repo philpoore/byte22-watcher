@@ -1,2 +1,12 @@
-#!/bin/bash
-node . "$@"
+
+==> test2.log <==
+pm2-3.niia.net [30:00:39:42] "GET /cgi-bin/imagemap/tris_subj?178,129 HTTP/1.0" 302 0
+pm2-3.niia.net [30:00:39:42] "GET /./enviro/html/tris/tris_fac.html HTTP/1.0" 200 670
+www-d4.proxy.aol.com [30:00:39:49] "GET / HTTP/1.0" 200 4889
+netcom4.netcom.com [30:00:39:50] "GET /Rules.html HTTP/1.0" 304 0
+pm2-3.niia.net [30:00:39:51] "GET /enviro/gif/tris_fac.gif HTTP/1.0" 200 11860
+netcom4.netcom.com [30:00:39:51] "GET /icons/circle_logo_small.gif HTTP/1.0" 304 0
+netcom4.netcom.com [30:00:39:58] "GET /docs/EPAFR-CONTENTS HTTP/1.0" 302 -
+netcom4.netcom.com [30:00:39:51] "GET /icons/circle_logo_small.gif HTTP/1.0" 304 0
+netcom4.netcom.com [30:00:39:58] "GET /docs/EPAFR-CONTENTS HTTP/1.0" 302 -
+netcom4.netcom.com [30:00:39:58] "GET /docs/EPAFR-CONTENTS HTTP/1.0" 302 -
