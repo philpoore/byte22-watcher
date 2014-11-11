@@ -13,6 +13,7 @@ Displays most common results in a tabular format and can save data in a JSON fil
 ####Keyboard Commands
 * Ctrl+T - Shows a table of the results in descending order.
 * Ctrl+S - Saves the data to savedData.json in the current folder.
+* Ctrl+D - Saves data into table to tabularData.txt in the current folder.
 
 ####Parameters
 * colNum is the number of delimeters to skip past (counts from 1)

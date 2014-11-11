@@ -15,6 +15,7 @@ var colNum = argv.c || null;
 var delimeter = argv.d || ' ';
 var file = argv.f || null;
 var savedKnownFile = './savedData.json';
+var savedTableFile = 'tabularData.txt';
 
 // Prevents 0 becoming null if you want to select the first column. Count from one instead of zero now.
 colNum = colNum - 1;
@@ -43,11 +44,24 @@ if(argv.help || argv.h) {
 keypress(process.stdin);
 
 
-function createTable() {
-	var table = new Table({
-	    head: ['Column Name', 'Count']
-	  , colWidths: [50, 15]
-	});
+function createTable(clrs) {
+
+	if(clrs == true) {
+		var table = new Table({
+		    head: ['Column Name', 'Count'],
+		    colWidths: [50, 15]
+	    });
+	} else {
+		var table = new Table({
+		    head: ['Column Name', 'Count'],
+		    colWidths: [50, 15],
+	        style: {
+	            head: [],
+	            border: []
+	        }
+	    });	
+	}
+
 
 	// Convert data to table-friendly format.
 	var kca = JSON.stringify(knownColumns).split(',').map(function(str){
@@ -90,7 +104,7 @@ process.stdin.on('keypress', function (ch, key) {
 
 		console.log('==========================================================\nShowing Summary of Collected Data:\n');
 
-		console.log(createTable());
+		console.log(createTable(true));
 	}
 
 	if (key && key.ctrl && key.name == 's') {
@@ -99,8 +113,8 @@ process.stdin.on('keypress', function (ch, key) {
 	}
 
 	if (key && key.ctrl && key.name == 'd') {
-		console.log('\nSaving Table to ', savedKnownFile);
-		fs.writeFileSync(savedKnownFile, createTable());
+		console.log('\nSaving Table to ', savedTableFile);
+		fs.writeFileSync(savedTableFile, createTable(false), {'encoding': 'utf8'});
 	}
 
 });
